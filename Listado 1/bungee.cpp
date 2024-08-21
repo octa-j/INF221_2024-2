@@ -10,7 +10,7 @@ int main(){
     int H[N];
 
     for (int i=0; i<N; i++){
-        cin>>H[i];              //<----- HAVB
+        cin>>H[i];              
     }
 
     int max=0;
