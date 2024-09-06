@@ -24,7 +24,7 @@ func main() {
 	var filename string
 	fmt.Scanln(&filename)
 	fmt.Print("Enter the corresponding algorithm numbre: \n")
-	fmt.Print("1. Bubble Sort\n2. Merge Sort\n3. Quick Sort\n4. Go Sort\n")
+	fmt.Print("1. Bubble Sort\n2. Merge Sort\n3. Quick Sort\n4. Go Sort\n5. Bubble Sort V2\n")
 
 	var algNum int
 	fmt.Scanln(&algNum)
@@ -105,6 +105,8 @@ func main() {
 				quickSort(&subarr)
 			} else if algNum == 4 {
 				slices.Sort(subarr)
+			} else if algNum == 5 {
+				bubbleSortV2(&subarr)
 			}
 			elapsed := time.Since(start)
 
