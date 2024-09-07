@@ -23,7 +23,7 @@ func main() {
 	fmt.Print("Enter the filename: ")
 	var filename string
 	fmt.Scanln(&filename)
-	fmt.Print("Enter the corresponding algorithm numbre: \n")
+	fmt.Print("Enter the corresponding algorithm number: \n")
 	fmt.Print("1. Bubble Sort\n2. Merge Sort\n3. Quick Sort\n4. Go Sort\n5. Bubble Sort V2\n")
 
 	var algNum int
