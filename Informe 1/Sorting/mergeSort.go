@@ -37,11 +37,3 @@ func mergeSort(array *[]int) []int {
 	return merge(&first, &second)
 
 }
-
-/* Archivo general:
-lee el archivo con los datos
-crea el archivo para ingresar los datos finales
-almacena los datos en un arreglo de enteros
-llama a la función merge sort
-escribe los datos formateados sobre el archivo solution
-*/
