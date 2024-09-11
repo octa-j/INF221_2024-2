@@ -11,63 +11,108 @@
 #define vvi vector<vector<int> >
 using namespace std;
 
-void add(vvi mA, vvi mB, vvi& matrix_C, int len2){
-	for (int i = 0; i < len2; i++)
-		for (int j = 0; j < len2; j++)
-			matrix_C[i][j]
-				= mA[i][j] + mB[i][j];
+// Función que calcula suma de matrices
+void add(vvi &mA, vvi &mB, vvi &mC, int n){
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			mC[i][j] = mA[i][j] + mB[i][j];
+		}
+	}
 }
 
-vvi strassen(vvi &mA, vvi &mB, int len){
-    vvi mR(len, vector<int>(len, 0));
+// Función que calcula resta de matrices
+void substract(vvi &mA, vvi &mB, vvi &mC, int n){
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			mC[i][j] = mA[i][j] - mB[i][j];
+		}
+	}
+}
 
-	if (len <= 7){
+// Función que multiplica matrices con metodo Strassen
+// recibe las matrices a multiplicar por referencia y su lado
+// y retorna matriz resultado
+void strassen(vvi &mA, vvi &mB, vvi &mR, int len){
+
+	// Caso base para matrix <= 8x8
+	// llama a multiplicación clásica en caso base
+	if (len <= 16){
 		classic(mA, mB, mR, len, len, len);}
 	else {
-		int len2 = len/2;
+		int n = len/2;
 
-		vector<int> row_vector(len2, 0);
-		vvi mR_00(len2, row_vector);
-		vvi mR_01(len2, row_vector);
-		vvi mR_10(len2, row_vector);
-		vvi mR_11(len2, row_vector);
+		vector<int> row(n, 0);
 
-		vvi mA_00(len2, row_vector);
-		vvi mA_01(len2, row_vector);
-		vvi mA_10(len2, row_vector);
-		vvi mA_11(len2, row_vector);
-		vvi mB_00(len2, row_vector);
-		vvi mB_01(len2, row_vector);
-		vvi mB_10(len2, row_vector);
-		vvi mB_11(len2, row_vector);
+		// Inicializando sub matrices necesarias
+		// partes de las originales mA y mB
+		vvi a(n, row), b(n,row), c(n,row), d(n,row);
+		vvi e(n,row), f(n,row), g(n,row), h(n,row);
 
-		for (int i = 0; i < len2; i++)
-			for (int j = 0; j < len2; j++) {
-				mA_00[i][j] = mA[i][j];
-				mA_01[i][j] = mA[i][j + len2];
-				mA_10[i][j] = mA[len2 + i][j];
-				mA_11[i][j] = mA[i + len2][j + len2];
-				mB_00[i][j] = mB[i][j];
-				mB_01[i][j] = mB[i][j + len2];
-				mB_10[i][j] = mB[len2 + i][j];
-				mB_11[i][j] = mB[i + len2][j + len2];
+		//almacenarán operaciones parciales
+		vvi p1(n, row), p2(n, row), p3(n, row), p4(n, row);
+		vvi p5(n, row), p6(n, row), p7(n, row);
+
+		// para valores temporales
+		vvi t1(n, row), t2(n, row), t3(n, row), t4(n, row);
+
+		// poblando submatrices a-h
+		for (int i=0; i<n; i++){
+			for (int j=0; j<n; j++){
+				// submatrices A
+				a[i][j]=mA[i][j];
+				b[i][j]=mA[i][j+n];
+				c[i][j]=mA[i+n][j];
+				d[i][j]=mA[i+n][j+n];
+
+				// submatrices B
+				e[i][j]=mB[i][j];
+				f[i][j]=mB[i][j+n];
+				g[i][j]=mB[i+n][j];
+				h[i][j]=mB[i+n][j+n];
+
 			}
-        cout<<"hola"<<endl;
-		add(strassen(mA_00, mB_00, len2), strassen(mA_01, mB_10, len2), mR_00, len2);
-		add(strassen(mA_00, mB_01, len2), strassen(mA_01, mB_11, len2), mR_01, len2);
-		add(strassen(mA_10, mB_00, len2), strassen(mA_11, mB_10, len2), mR_10, len2);
-		add(strassen(mA_10, mB_01, len2), strassen(mA_11, mB_11, len2), mR_11, len2);
+		}
 
-		for (int i = 0; i < len2; i++)
-			for (int j = 0; j < len2; j++) {
-				mR[i][j] = mR_00[i][j];
-				mR[i][j + len2]= mR_01[i][j];
-				mR[len2 + i][j]= mR_10[i][j];
-				mR[i + len2][j + len2]= mR_11[i][j];
+		
+		//realiza las operaciones parciales 
+		substract(f, h, t1, n);
+		strassen(a, t1, p1, n);
+		add(a, b, t1, n);
+		strassen(t1, h, p2, n);
+		add(c, d, t1, n);
+		strassen(t1, e, p3, n);
+		substract(g, e, t1, n);
+		strassen(t1, d, p4, n);
+		add(a, d, t1, n);
+		add(e, h, t2, n);
+		strassen(t1, t2, p5, n);
+		substract(b, d, t1, n);
+		add(g, h, t2, n);
+		strassen(t1, t2, p6, n);
+		substract(a, c, t1, n);
+		add(e, f, t2, n);
+		strassen(t1, t2, p7, n);
+
+		// almacena operaciones finales en var temporales
+		for (int i=0; i<n; i++){
+			for (int j=0; j<n; j++){
+				t1[i][j] = p5[i][j]+p4[i][j]-p2[i][j]+p6[i][j];
+				t2[i][j] = p1[i][j]+p2[i][j];
+				t3[i][j] = p3[i][j]+p4[i][j];
+				t4[i][j] = p1[i][j]+p5[i][j]-p3[i][j]-p7[i][j];
 			}
+		}
 
+		// poblando matriz resultado
+		for (int i=0; i<n; i++){
+			for (int j=0; j<n; j++){
+				mR[i][j] = t1[i][j];
+				mR[i][j+n] = t2[i][j];
+				mR[i+n][j] = t3[i][j];
+				mR[i+n][j+n] = t4[i][j];
+			}
+		}
 	}
-	return mR;
 }
 
 

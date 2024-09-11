@@ -85,6 +85,8 @@ func main() {
 		defer f.Close()
 		w := bufio.NewWriter(f)
 
+		fmt.Print("array_size,execution_time")
+
 		// Crea subarreglo de tamaño n
 		n := 10
 		for n < 1000001 {

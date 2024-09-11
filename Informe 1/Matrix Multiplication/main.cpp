@@ -6,9 +6,12 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <math.h>
 
 #define vvi vector<vector<int> >
 using namespace std;
+using namespace chrono;
 
 int main(){
     int algNum, maxlengthA, maxwlAB, maxwidthB;
@@ -23,7 +26,6 @@ int main(){
     cin>>maxwlAB;
     cout<<"Insert matrix B max width: ";
     cin>>maxwidthB;
-    cout<<endl;
 
     ifstream numsA ("randomA.txt");
     ifstream numsB ("randomB.txt");
@@ -36,13 +38,19 @@ int main(){
         numsB>>madreB[i];
     }
 
+    string fileName;
+    cout<<"Insert output file name: ";
+    cin>>fileName;
+    cout<<endl;
+    ofstream out;
+    out.open(fileName);
 
-    int lengthA=0, wlAB=0, widthB=0;
+    int lengthA=1, wlAB=1, widthB=1;
 
-    for (float p=1; p<=1; p+=1){ /// change to p = 0.1 & += 0.1
-        lengthA = maxlengthA*p;
-        wlAB = maxwlAB*p;
-        widthB = maxwidthB*p;
+    while (lengthA<maxlengthA && wlAB<maxwlAB && widthB<maxwidthB){
+        lengthA *=2;
+        wlAB *=2;
+        widthB *=2;
 
         vvi mA(lengthA, vector<int>(wlAB));
         vvi mB(wlAB, vector<int>(widthB));
@@ -61,6 +69,11 @@ int main(){
             }
         }
 
+        
+
+        time_point<std::chrono::system_clock> start, end;
+        start = system_clock::now();
+
         switch (algNum){
             case 1:{
                 classic(mA, mB, mR, lengthA, wlAB, widthB);
@@ -72,21 +85,18 @@ int main(){
                 break;
             }
             case 3:{
-                mR = strassen(mA, mB, lengthA);
+                strassen(mA, mB, mR, lengthA);
                 break;
             }
         }
-
-        for (int i=0; i<lengthA; i++){
-            for (int j=0; j<widthB; j++){
-                cout<<mR[i][j]<<" ";
-            }
-            cout<<endl;
-        }
+        end = system_clock::now();
+        int duration = duration_cast<microseconds>(end - start).count();
+        int size = sqrt(((lengthA+ widthB)*wlAB)/2);
+        out << size<<","<<duration<<endl;
 
     }
-    
-
 
     return 0;
+        
+
 }
