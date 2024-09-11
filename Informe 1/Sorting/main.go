@@ -29,7 +29,7 @@ func main() {
 	var algNum int
 	fmt.Scanln(&algNum)
 
-	// Open file
+	// abre y lee el archivo
 	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -37,10 +37,9 @@ func main() {
 	}
 	defer file.Close()
 
-	// Create a scanner to read the file
 	scanner := bufio.NewScanner(file)
 
-	// Increase the buffer size
+	// aumentamos tamaño del buffer por tamaño de arreglos de entrada
 	const maxLineSize = 10 * 1024 * 1024 // 10 MB buffer size
 	buf := make([]byte, maxLineSize)
 	scanner.Buffer(buf, maxLineSize)

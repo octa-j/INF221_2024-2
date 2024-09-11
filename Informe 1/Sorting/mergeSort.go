@@ -1,6 +1,6 @@
 package main
 
-// función que une dos arreglos ordenados en uno, también ordenado
+// función que une dos subarreglos ordenados en uno, también ordenado
 func merge(first *[]int, second *[]int) []int {
 	i := 0
 	j := 0

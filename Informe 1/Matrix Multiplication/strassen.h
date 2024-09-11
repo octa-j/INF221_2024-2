@@ -34,7 +34,7 @@ void substract(vvi &mA, vvi &mB, vvi &mC, int n){
 // y retorna matriz resultado
 void strassen(vvi &mA, vvi &mB, vvi &mR, int len){
 
-	// Caso base para matrix <= 8x8
+	// Caso base para matrix <= 16*16
 	// llama a multiplicación clásica en caso base
 	if (len <= 16){
 		classic(mA, mB, mR, len, len, len);}
@@ -94,6 +94,7 @@ void strassen(vvi &mA, vvi &mB, vvi &mR, int len){
 		strassen(t1, t2, p7, n);
 
 		// almacena operaciones finales en var temporales
+		// más eficiente que llamar a las funciones para suma y resta individualmente
 		for (int i=0; i<n; i++){
 			for (int j=0; j<n; j++){
 				t1[i][j] = p5[i][j]+p4[i][j]-p2[i][j]+p6[i][j];

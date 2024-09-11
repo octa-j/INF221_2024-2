@@ -14,6 +14,8 @@ using namespace std;
 using namespace chrono;
 
 int main(){
+    //ingreso de datos necesarios por consola
+
     int algNum, maxlengthA, maxwlAB, maxwidthB;
 
     cout<<"Insert the corresponding algorithm number"<<endl;
@@ -27,6 +29,7 @@ int main(){
     cout<<"Insert matrix B max width: ";
     cin>>maxwidthB;
 
+    //lee archivos de entrada y ingresa los datos a arreglos
     ifstream numsA ("randomA.txt");
     ifstream numsB ("randomB.txt");
     vector<int> madreA(maxlengthA*maxwlAB);
@@ -38,6 +41,7 @@ int main(){
         numsB>>madreB[i];
     }
 
+    // define archivo para output, por consola
     string fileName;
     cout<<"Insert output file name: ";
     cin>>fileName;
@@ -48,6 +52,7 @@ int main(){
     int lengthA=1, wlAB=1, widthB=1;
 
     while (lengthA<maxlengthA && wlAB<maxwlAB && widthB<maxwidthB){
+        // declaración de variables
         lengthA *=2;
         wlAB *=2;
         widthB *=2;
@@ -57,6 +62,7 @@ int main(){
         vvi mT(widthB, vector<int>(wlAB));
         vvi mR(lengthA, vector<int>(widthB));
 
+        // población de submatrices para iteración
         for (int i=0; i<lengthA; i++){
             for (int j=0; j<wlAB; j++){
                 mA[i][j]=madreA[wlAB*i+j];
@@ -70,7 +76,7 @@ int main(){
         }
 
         
-
+        // comienza medición de tiempo y llama algoritmo solicitado
         time_point<std::chrono::system_clock> start, end;
         start = system_clock::now();
 
@@ -90,6 +96,8 @@ int main(){
             }
         }
         end = system_clock::now();
+
+        // hace output al archivo definido
         int duration = duration_cast<microseconds>(end - start).count();
         int size = sqrt(((lengthA+ widthB)*wlAB)/2);
         out << size<<","<<duration<<endl;
