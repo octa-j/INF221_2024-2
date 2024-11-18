@@ -51,7 +51,7 @@ vvi trans(26, vector<int>(26));
 
 void times_fb(){
 
-	ofstream fb_times ("fb_tiempos_s.csv");
+	ofstream fb_times ("fb_tiempo.csv");
 
 	fb_times<<"lena,lenb,fb0,fb1"<<endl;
 
@@ -94,12 +94,12 @@ void times_fb(){
 
 void times_dp(){
 
-	ofstream dp_times ("dp_tiempos_s.csv");
+	ofstream dp_times ("dp_tiempo.csv");
 	dp_times<<"lena,lenb,dp"<<endl;
 
 	time_point<high_resolution_clock> start_dp, end_dp;
-
-	for (int n = 1; n<5; n++){
+	int n=0;
+	for (int n = 0; n<10; n++){
 		for (int x=1; x<10; x++){
 			lena = pow(10,n)*x;
 			lenb = lena;
@@ -135,7 +135,7 @@ int main(){
 	setup();
 
 	times_dp();
-	times_fb();
+	//times_fb();
 
 	return 0;
 }

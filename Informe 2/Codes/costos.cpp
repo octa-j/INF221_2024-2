@@ -28,10 +28,10 @@ int c_trans(char a1, char a2){
 // también lee 
 void setup(){
 
-	ifstream file_ins ("../datasets/c_ins.txt");
-	ifstream file_del ("../datasets/c_del.txt");
-	ifstream file_sub ("../datasets/c_sub.txt");
-	ifstream file_trans ("../datasets/c_trans.txt");
+	ifstream file_ins ("../Datasets/c_ins.txt");
+	ifstream file_del ("../Datasets/c_del.txt");
+	ifstream file_sub ("../Datasets/c_sub.txt");
+	ifstream file_trans ("../Datasets/c_trans.txt");
 
 	bool first = true;
 
@@ -47,8 +47,8 @@ void setup(){
 		first = false;
 	}
 
-	ifstream file_a("../datasets/"+name_a);
-	ifstream file_b("../datasets/"+name_b);
+	ifstream file_a("../Datasets/"+name_a);
+	ifstream file_b("../Datasets/"+name_b);
 
 	file_a>>a;
 	file_b>>b;
